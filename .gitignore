@@ -1,1 +1,4 @@
 books/
+code/.env
+code/data
+code/.ipynb_checkpoints
