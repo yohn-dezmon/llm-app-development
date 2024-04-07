@@ -46,3 +46,37 @@ the LLM can be any model (OpenAI, Anthropic, etc.)
 
 we just went over `v1-052-langchain-in-15-mins` :D
 
+# Models
+
+Replicate API Token:
+https://replicate.com/account/api-tokens
+
+
+LLMs != Chat Models in langchain.
+
+LLMs (langchain):
+- receive text
+- respond with text (no schema)
+
+Chat Models:
+- input a "chat message"
+- output a "chat message"
+- each chat message has a schema
+- you get a response with "content" field 
+- each response is of type `<class 'langchain_core.messages.ai.AIMessage'>`
+- each question can have a SystemMessage (which has a content field)
+and a HumanMessage (which has a content field)
+
+???
+`pip install replicate`
+
+Multiple ways to do the same thing:
+- `my_chat = ChatOpenAI()` --> `my_chat(chat_question)`
+- `my_chat.predict_messages()` 
+- `my_chat.invoke()`  
+
+`invoke()`:
+- the result of `my_chat.invoke()` has additional `response_metadata` field!   
+
+
+
