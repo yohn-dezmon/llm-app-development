@@ -173,3 +173,35 @@ pass in prompts via `chain.run()`
 - yeah.
 
 # Agents
+
+- not mature functionality
+- expensive with OpenAI
+- get stuck in loops if asked questions they aren't trained for  
+
+load embeddings into a vector database...
+
+you provide "tools" to the LLM agent, and it decides which tool to use.
+
+```python
+from langchain.agents import load_tools
+
+tool_names = ["llm-math"]
+```
+
+max iterations necessary to limit the agent.  
+
+You can define a custom tool, which provides access to a vector database created with the RAG technique.  
+
+# Indexing API  
+
+
+```python
+from langchain.indexes import SQLRecordManager, index
+```
+
+allows you to iteratively update your vector database with new documents/modified documents.  
+
+
+
+
+
