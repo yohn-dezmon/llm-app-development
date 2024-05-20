@@ -3,3 +3,4 @@ code/data
 code/section-26-level-1-app/data
 code/.ipynb_checkpoints
 *.env
+*.ipynb_checkpoints
