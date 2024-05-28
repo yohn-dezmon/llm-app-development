@@ -76,4 +76,76 @@ warnings.simplefilter("ignore", category=LangChainDeprecationWarning)
     - set vector db as `retriever` in chain
     - ask questions with `QA_chain.run(question)`
 
+# v1-055 extracting structured data
+
+this can be accomplished via the `ResponseSchema` object.
+- you put the kind of info (fields) you want to extract  
+
+```python
+ResponseSchema(
+    name="singer",
+    description="name of the singer"
+)
+```
+
+`StructuredOutputParser`:
+- archives the extracted data into a JSON dictionary
+- `StructuredOutputParser.from_response_schemas(__)`
+
+**The format instructions created from the ResponseSchema + StructuredOutputParser are passed in to each prompt!**  
+- in the prompt template we insert it as `{format_instructions}`   
+
+# v1-056 Evaluate a QA app  
+
+you can provide a set of questions and their correct answers.  
+Then you can generate the predictions from a given model (e.g. conversational model).  
+Then you can pass the correct answers + questions, and predictions into the `evaluation chain`.  
+this will return a list of dictionaries determining if each prediction matches the desired correct response!  
+
+
+Evaluation chain:
+- `from langchain.evaluation.qa import QAEvalChain`
+```python
+evaluation_chain = QAEvalChain.from_llm(llm)
+evaluate_responses = evaluation_chain.evaluate(
+    questions_and_answers,
+    predictions,
+    question_key="question",
+    answer_key="answer"
+)
+```
+
+output:
+```python
+[{'results': ' CORRECT'}, {'results': ' CORRECT'}]
+```
+
+# v1-057 Ask a database  
+
+question:
+- what if the db is not in memory?
+```python
+db_chain = SQLDatabaseChain(
+    llm=llm,
+    database=db,
+    verbose=True
+)
+```
+
+answer:
+- I think this can just be a SQLAlchemy wrapper around a db engine!  
+- https://api.python.langchain.com/en/latest/utilities/langchain_community.utilities.sql_database.SQLDatabase.html#langchain_community.utilities.sql_database.SQLDatabase  
+- https://api.python.langchain.com/en/latest/sql/langchain_experimental.sql.base.SQLDatabaseChain.html  
+
+
+- `SQLDatabaseChain`
+- ask questions in natural language
+- db_chain.run(' ')
+- it produces SQL
+- queries db
+- returns results   
+
+It has to be SQLAlchemy/ORM such that the python code has access to the data model.  
+
+
 
