@@ -148,4 +148,40 @@ answer:
 It has to be SQLAlchemy/ORM such that the python code has access to the data model.  
 
 
+# v1-058 Using a github repo as the source material
+
+- `os.walk(repo)` 
+    - allows you to iterate over a directory tree
+    - each step produces a three tuple
+    - (directory_path, sub_directories, filenames)
+- in this context you load each dirpath into the `TextLoader`
+- convert text chunks into embeddings and store them in vector db
+- pass vector db into chat RetrievalQA Chain as a retriever
+- ask questions about the github repo with `.run()`
+- .run() output is the answer.
+
+# v1-059 Ask an API
+
+- there's a specific chain for API docs
+    - `APIChain` 
+- you pass in API docs to the APIChain
+- ask questions with .run(question)
+- output is answer!
+
+# v1-060 Chatbot with memory + personality 
+
+- specify the chatbot's role in plain text
+- in the template, put a section for `{chat_history}`
+- in the template put input for human: `Human: {human_input}`
+- also put section for `Chatbot: `
+- Make a `PromptTemplate`
+    - specify `input_variables` of `chat_history` and `human_input`
+- Use `ConversationBufferMemory`
+- make an `LLMChain` with `OpenAI()` as the `llm`
+- ask it questions with `chatbot.predict(human_input=question)`
+
+
+# v1-061 RAG with DeepLake
+
+- **DeepLake** is a more sophisticated vector database.
 
