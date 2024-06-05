@@ -206,4 +206,19 @@ DeepLake(
 - create RetreivalQA chain 
 - pass in vector db as retriever `retriever=db.as_retriever()`
 - ask questions via `.run()`
-- 
+
+
+# v1-062 Simple Agent 
+
+- the agent will decide which external plugin to use
+- `pip install google-api-python-client`
+- you need to generate GOOGLE_API_KEY and GOOGLE_CSE_ID
+- `GoogleSearchAPIWrapper()` -- allows you to search google via an agent!
+- `TextRequestsWrapper()` -- allows you to make requests to a URL...
+- You pass those in as `Tool` objects to a tools array
+- `Tool` is an agent
+- you initialize an `agent` with `tools=tools`
+- if you ask a question about a specific URL, then the TextRequestsWrapper() tool will be chosen by the agent 
+- ask questions with `response = my_agent(question)` 
+- output: `response['output']`
+
