@@ -183,5 +183,27 @@ It has to be SQLAlchemy/ORM such that the python code has access to the data mod
 
 # v1-061 RAG with DeepLake
 
-- **DeepLake** is a more sophisticated vector database.
+`pip install "deeplake[enterprise]"`
 
+- **DeepLake** is a more sophisticated vector database.
+- created DeepLake api key via activeloop.ai 
+- load credentials 
+- create db name
+- provide private documents to the vector db
+- provide private doc to the RecursiveCharacterTextSplitter
+- use .create_documents(data)
+- create DeepLake db like so:
+```python
+embeddings = OpenAIEmbeddings()
+dataset_path = f"hub://{my_activeloop_org_id}/{my_activeloop_dataset_name}"
+DeepLake(
+    dataset_path=dataset_path,
+    embedding=embeddings
+)
+```
+- load chunks and transform them into embeddings with `db.add_documents(doc_chunks)`
+- create llm obj
+- create RetreivalQA chain 
+- pass in vector db as retriever `retriever=db.as_retriever()`
+- ask questions via `.run()`
+- 
