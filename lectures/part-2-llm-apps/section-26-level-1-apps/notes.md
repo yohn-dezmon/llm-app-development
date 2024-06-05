@@ -222,3 +222,53 @@ DeepLake(
 - ask questions with `response = my_agent(question)` 
 - output: `response['output']`
 
+- **if agents cant find an answer** they will loop over and over trying to get a response.
+    - that's why you need to limit the looping with `max_iterations=3`
+
+# v1-063 Advanced Output Parser
+
+- StructuredOutputParser formats output into a simple JSON dictionary
+- Pydantic output parser!
+- this allows support for the output to be in lists/integers/dictionaries/JSON
+- we can also validate the output structure! 
+Here's how to use the validator attribute from Pydantic!
+
+```python
+class Suggestions_Output_Structure(BaseModel):
+    words: List[str] = Field(
+        description="list of substitute words based on the context"
+    )
+    reasons: List[str] = Field(
+        description="the reasoning of why this word fits the context"
+    )
+
+    #Throw error if the substitute word starts with a number
+    @validator('words')
+    def not_start_with_number(cls, info):
+        for item in info:
+            if item[0].isnumeric():
+                raise ValueError("ERROR: The word cannot start with a number")
+        return info
+
+    @validator('reasons')
+    def end_with_dot(cls, info):
+      for idx, item in enumerate(info):
+        if item[-1] != ".":
+          info[idx] += "."
+      return info
+```
+
+- you pass the object you create with BaseModel to `PydanticOutputParser`
+- you use `PromptTemplate` for input
+- in the prompt template, include a `{format_instructions}` section 
+- pass in output parser to `PromptTemplate`
+```python
+partial_variables={
+        "format_instructions": my_parser.get_format_instructions()
+    }
+```
+- create input with `my_prompt.format_prompt(var1="", var2="")`
+- pass input to LLM with `output = llm(input.to_string())`
+- validate output! `my_parser.parse(output)`
+
+
